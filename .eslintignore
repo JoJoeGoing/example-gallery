@@ -1,0 +1,8 @@
+/dist
+/lib
+/App
+/build
+/config
+/public/dist
+/public/lib
+index.js
