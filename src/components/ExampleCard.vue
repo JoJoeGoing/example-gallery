@@ -1,11 +1,16 @@
 <template>
-<div class="example-list-item">
-    <a target="_blank" class="example-link" :href="exampleLink">
-        <img class="chart-area" src="../assets/placeholder.jpg"  />
-        <h4 class="example-title">{{currentTitle}}</h4>
-        <h5 class="example-subtitle" v-if="showSubtitle">{{subtitle}}</h5>
-    </a>
-</div>
+    <div class="example-list-item">
+        <a target="_blank" class="example-link" :href="exampleLink">
+            <picture class="chart-area">
+                <source :data-srcset="iconSrc" type="image/webp" />
+                <source :data-srcset="iconSrc" type="image/png" />
+
+                <img class="chart-area" src="../assets/placeholder.jpg" :data-src="iconSrc" />
+            </picture>
+            <h4 class="example-title">{{ currentTitle }}</h4>
+            <h5 class="example-subtitle" v-if="showSubtitle">{{ subtitle }}</h5>
+        </a>
+    </div>
 </template>
 
 
@@ -22,12 +27,15 @@ export default {
             default: {
                 titleCN: '',
                 title: '',
-                id: ''
+                id: undefined
             }
         }
     },
     setup(props) {
         const { title, titleCN, id } = props.example
+
+        const iconSrc = `/img/${id}.jpg`
+        
 
         const currentTitle = computed(() => { return store.locale === 'zh' ? titleCN : title })
 
@@ -50,7 +58,8 @@ export default {
             currentTitle,
             subtitle,
             showSubtitle,
-            exampleLink
+            exampleLink,
+            iconSrc
         }
 
     },
