@@ -45,7 +45,7 @@
                             </div>
                         </el-header>
                         <el-main>
-                            <CodeAce  id="code-panel" :initialCode="initialCode"></CodeAce>
+                            <CodeAce id="code-panel" :initialCode="initialCode"></CodeAce>
                         </el-main>
                     </el-container>
                 </el-tab-pane>
@@ -56,37 +56,32 @@
             id="h-handler"
             @mousedown="onSplitterDragStart"
             :style="{ left: leftContainerSize + '%' }"
-            v-if="!shared.isMobile"
         ></div>
-    
+        <Preview
+            :inEditor="true"
+            class="right-container"
+            ref="preview"
+            :style="{
+                width: 100 - leftContainerSize + '%',
+                left: leftContainerSize + '%'
+            }"
+        ></Preview>
     </div>
 </template>
 
 <script>
-
-import {
-    store,
-} from "../common/store";
+import { store, loadExampleCode, parseSourceCode } from "../common/store";
+import { URL_PARAMS } from "../common/config";
 
 export default {
-
     data() {
         return {
             mousedown: false,
             leftContainerSize: 40,
-            mobileMode: false,
             shared: store,
             initialCode: "",
 
             currentTab: "code-editor",
-
-            fullCode: "",
-
-            fullCodeConfig: {
-                mimimal: false,
-                esm: true,
-                node: false, // If is in node
-            },
         };
     },
 
@@ -97,6 +92,9 @@ export default {
     },
 
     mounted() {
+        loadExampleCode().then((code) => {
+            store.sourceCode = this.initialCode = parseSourceCode(code);
+        });
 
         window.addEventListener("mousemove", (e) => {
             if (this.mousedown) {
@@ -117,8 +115,8 @@ export default {
         },
         disposeAndRun() {
             // this.$refs.preview.refreshAll();
-        }
-    }
+        },
+    },
 };
 </script>
 

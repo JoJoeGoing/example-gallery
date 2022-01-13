@@ -44,7 +44,7 @@ export default {
             if ('useDirtyRect' in URL_PARAMS) {
                 hash.push(useDirtyRect)
             }
-            return '/editor/index.html'
+            return './editor.html?' + hash.join('&');
         })
         return {
             currentTitle,
